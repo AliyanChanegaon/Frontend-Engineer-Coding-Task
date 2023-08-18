@@ -1,10 +1,13 @@
-/** @type {import('tailwindcss').Config} */
+
 
 module.exports = {
   
   content: [
-    './src/App.tsx',
-    './src/components/contact-page.tsx',
+    "./src/pages/charts-map-page.tsx",
+    "./src/components/aside-bar.tsx",
+   "./src/pages/contact-page.tsx",
+    "./src/components/empty-contact.tsx"
+    
   ],
   theme: {
     extend: {

@@ -1,11 +1,14 @@
+import MainPage from "./pages/main-page";
+import AllRoutes from "./routes/all-routes";
 
 
-import ContactPage from './components/contact-page';
+
+
 
 function App() {
   return (
     <div>
-      <ContactPage/>
+      <AllRoutes />
     </div>
   );
 }
