@@ -1,116 +1,123 @@
 import { useState } from "react";
-import AsideBar from "../components/aside-bar";
 import EmptyContact from "../components/empty-contact";
+import InputForm, { userModel } from "../components/input-form";
+
+const initialValue = {
+  firstName: "",
+  lastName: "",
+  status: "Active",
+  id: "",
+};
 
 const ContactPage = () => {
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [data, setData] = useState<userModel>(initialValue);
+  const [PeoplesData, setPeoplesData] = useState<Array<userModel>>([]);
+  const [inputActive, setInputActive] = useState(false);
+  const [isEdit, setisEdit] = useState(false);
 
-  const HandlingClick = () => {
-    setIsEmpty(false);
+  function getRandomString(length: number) {
+    const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * alphabet.length);
+      result += alphabet[randomIndex];
+    }
+    return result;
+  }
+
+  const HandlingBackButton = () => {
+    if (PeoplesData.length === 0) {
+      setInputActive(false);
+    } else {
+      setInputActive(false);
+    }
+  };
+
+  const HandlingSubmit = () => {
+    if (PeoplesData.length === 0) {
+      const randomIndex = getRandomString(3);
+      const newData = { ...data, id: randomIndex };
+      setPeoplesData([...PeoplesData, newData]);
+    }
+
+    const dataExists = PeoplesData.some(
+      (el) => el.firstName === data.firstName && el.lastName === data.lastName
+    );
+
+    if (dataExists) {
+      alert("Person already exist");
+      return;
+    } else {
+      const randomIndex = getRandomString(3);
+      const newData = { ...data, id: randomIndex };
+      setPeoplesData([...PeoplesData, newData]);
+    }
+  };
+
+  const HandlingEditData = (value: userModel) => {
+    console.log(value);
+    console.log("PeoplesData before", PeoplesData);
+    //  const findIndx = PeoplesData.findIndex((el) => el.id === value.id);
+
+    // console.log(findIndx);
+    //  const newArr = PeoplesData.splice(findIndx, 1)
+    // console.log(newArr);
+    // console.log("PeoplesData after",PeoplesData);
+    const newArray = PeoplesData.map((el) => {
+      if (el.id === value.id) {
+        return value;
+      }
+      return el;
+    });
+    setPeoplesData(newArray);
+  };
+
+  const HandlingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name: key, value } = e.target;
+    setData({ ...data, [key]: value });
+  };
+
+  const HandilngDelete = (value: string) => {
+    const newArray = PeoplesData.filter((el, idx: number) => el.id != value);
+    setPeoplesData(newArray);
+  };
+
+  const HandlingEdit = (value: string) => {
+    console.log(value);
+    setisEdit(true);
+    const newArray = PeoplesData.find((el, idx: number) => el.id == value);
+
+    if (newArray) {
+      setData(newArray);
+    }
+    setInputActive(true);
   };
   return (
-    <div className="h-screen flex flex-col bg-[#ece9e4]">
-      <nav className="w-full h-[60px] flex justify-center items-center p-2 bg-[#306893]">
-        <p className="text-white text-2xl font-bold">Content Page</p>
-      </nav>
-      <div className="flex border">
-        <div style={{ width: "230px" }}>
-          <AsideBar />
-        </div>
+    <div className="h-screen flex flex-col justify-center  bg-[#ece9e4] w-full">
+     
+        {PeoplesData.length <= 0 && !inputActive && (
+          <EmptyContact HandlingClick={() => setInputActive(true)} />
+        )}
 
-        {isEmpty ? (
-          <EmptyContact HandlingClick={HandlingClick} />
-        ) : (
-          <div className="flex flex-col w-full items-center">
+        {inputActive && (
+          <div className="flex flex-col items-center">
             <h1 className="text-3xl p-5">Create Contact Screen</h1>
-            
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-              <div className="md:flex md:items-center mb-6">
-                <div className="md:w-1/3">
-                  <label
-                    className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                    htmlFor="inline-full-name"
-                  >
-                    Full Name
-                  </label>
-                </div>
-                <div className="md:w-2/3">
-                  <input
-                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-                    id="inline-full-name"
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div className="md:flex md:items-center mb-6">
-                <div className="md:w-1/3">
-                  <label
-                    className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                    htmlFor="inline-password"
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="md:w-2/3">
-                  <input
-                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-                    id="inline-password"
-                    type="password"
-                  />
-                </div>
-              </div>
 
-              <div className="md:flex md:items-center mb-6">
-                <div className="md:w-1/3">
-                  <label
-                    className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                    htmlFor="inline-password"
-                  >
-                    Status
-                  </label>
-                </div>
-                <div className="md:w-2/3">
-                  <div className="flex items-center mb-4">
-                    <input
-                      id="country-option-1"
-                      type="radio"
-                      name="countries"
-                      value="USA"
-                      className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="country-option-1"
-                      className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Active
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-4">
-                    <input
-                      id="country-option-1"
-                      type="radio"
-                      name="countries"
-                      value="USA"
-                      className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="country-option-1"
-                      className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Inactive
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-  Save Contact
-</button>
+            <InputForm
+              userData={data}
+              HandlingChange={HandlingChange}
+              HandlingSubmit={HandlingSubmit}
+              setinputActive={setInputActive}
+              HandlingBackButton={HandlingBackButton}
+              HandlingEditData={HandlingEditData}
+              isEdit={isEdit}
+            />
           </div>
         )}
-      </div>
+     
     </div>
   );
 };
 
 export default ContactPage;
+
