@@ -64,3 +64,4 @@ const ContactList = () => {
 };
 
 export default ContactList;
+// onclick we will popup contact detail

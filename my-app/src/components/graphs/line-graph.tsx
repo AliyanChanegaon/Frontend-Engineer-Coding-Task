@@ -9,7 +9,6 @@ Chart.register(
   require("chartjs-adapter-moment"), // Register the "time" scale adapter
   require("chart.js/auto") // Register other scales and types
 );
-
 const options: any = {
   plugins: {
     legend: {
