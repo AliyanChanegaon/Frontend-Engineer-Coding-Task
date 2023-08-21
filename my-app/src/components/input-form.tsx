@@ -1,33 +1,58 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
+import { addContact, editContact, selectContacts } from "../redux/contactSlice";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
-
-export interface userModel{
+export interface userModel {
   firstName: string;
   lastName: string;
   status: string;
   id: string;
 }
 
+const initialValue = {
+  firstName: "",
+  lastName: "",
+  status: "Active",
+  id: "",
+};
+
 export interface initialValueProps {
-  userData : userModel;
-  HandlingChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  HandlingSubmit?: () => void;
-  setinputActive?: Dispatch<SetStateAction<boolean>>;
   HandlingBackButton?: () => void;
   HandlingEditData?: (value: userModel) => void;
   isEdit?: boolean;
 }
 
-const InputForm = ({
-  userData,
-  HandlingChange,
-  HandlingSubmit,
-  setinputActive,
-  HandlingBackButton,
-  HandlingEditData,
-  isEdit,
-  
-}: initialValueProps) => {
+const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+const InputForm = ({ contactId }: { contactId?: string }) => {
+  const { contacts } = useTypedSelector(selectContacts);
+  const Navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState<userModel>(initialValue);
+
+  const HandlingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name: key, value } = e.target;
+    setFormData({ ...formData, [key]: value });
+  };
+
+  const HandlingSubmit = () => {
+    dispatch(
+      contactId
+        ? editContact({ ...formData})
+        : addContact({ ...formData, id: Date.now().toString() })
+    );
+    Navigate("/contact/list");
+  };
+
+  useEffect(() => {
+    if (contactId) {
+      const editableData = contacts.find((contact) => contact.id === contactId);
+      if (editableData) setFormData({ ...editableData });
+    }
+  }, []);
+
   return (
     <>
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -46,7 +71,7 @@ const InputForm = ({
               id="inline-full-name"
               type="text"
               name="firstName"
-              value={userData.firstName}
+              value={formData.firstName}
               onChange={HandlingChange}
             />
           </div>
@@ -66,7 +91,7 @@ const InputForm = ({
               id="inline-full-name"
               type="text"
               name="lastName"
-              value={userData.lastName}
+              value={formData.lastName}
               onChange={HandlingChange}
             />
           </div>
@@ -86,7 +111,7 @@ const InputForm = ({
               <input
                 type="radio"
                 name="status"
-                checked={userData.status === "Active"}
+                checked={formData.status === "Active"}
                 value="Active"
                 onChange={HandlingChange}
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
@@ -102,7 +127,7 @@ const InputForm = ({
               <input
                 type="radio"
                 name="status"
-                checked={userData.status === "Inactive"}
+                checked={formData.status === "Inactive"}
                 value="Inactive"
                 onChange={HandlingChange}
                 className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
@@ -121,24 +146,25 @@ const InputForm = ({
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
-            if (setinputActive) {
-              if (isEdit && HandlingEditData) {
-                setinputActive(false);
-                HandlingEditData(userData);
-              } else {
-                if (HandlingSubmit) {
-                  setinputActive(false);
-                  HandlingSubmit();
-                }
-              }
-            }
+            // if (setinputActive) {
+            //   if (isEdit && HandlingEditData) {
+            //     setinputActive(false);
+            //     HandlingEditData(formData);
+            //   } else {
+            //     if (HandlingSubmit) {
+            //       setinputActive(false);
+            //       HandlingSubmit();
+            //     }
+            //   }
+            // }
+            HandlingSubmit();
           }}
         >
-          {isEdit ? "Update Details" : "Save Contact"}
+          {contactId ? "Update Details" : "Save Contact"}
         </button>
         <button
           className="bg-white hover:bg-gray-300 text-black font-bold py-2 px-4 rounded"
-          onClick={HandlingBackButton}
+          onClick={() => Navigate("/contact/list")}
         >
           Go back
         </button>

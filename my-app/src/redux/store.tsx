@@ -1,13 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
-// ...
+import { configureStore } from '@reduxjs/toolkit';
+import contactReducer from './contactSlice'; // Import your reducer here
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-  
-  }
-})
+    contacts: contactReducer, // Add your reducer to the store
+  },
+});
 
-
+export default store;
 export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
