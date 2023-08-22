@@ -42,7 +42,7 @@ const API_KEY = 'YOUR_OCD_API_KEY'; // Replace this with your actual API key
 
 // ... rest of the code ...
 
-
+```jsx
 
 <h1>Objectives of Contact Page</h1>
 <ul>
