@@ -1,6 +1,22 @@
 # Taiyo.AI-Frontend-Engineer-Coding-Task
 
 
+<h1>API Documentation</h1>
+<ul>
+    <li>API Validity 2 days</li>
+    <li>Generate API from -"https://opencagedata.com/users/sign_in"</li>
+    <li>
+    Check your email for API key
+    </li>
+    <li>
+    Follow the path - my-app/src/components/maps/leaflet-map.tsx
+    </li>
+    <li>
+   Change the API key from line number 12
+    </li>
+    
+</ul>
+
 
 <h1>Objectives of Contact Page</h1>
 <ul>
