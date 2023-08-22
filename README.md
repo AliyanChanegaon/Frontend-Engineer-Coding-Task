@@ -1,4 +1,4 @@
-# Taiyo.AI-Frontend-Engineer-Coding-Task
+# Frontend-Engineer-Coding-Task
 
 
 # OpenCageData API Integration Guide
