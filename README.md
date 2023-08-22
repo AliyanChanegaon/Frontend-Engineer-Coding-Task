@@ -61,7 +61,7 @@ The API key obtained for accessing the OpenCageData API is valid for a duration 
 
 <h1>APIs Used</h1>
 <ul>
-    <li>[React leaflet : https://disease.sh/v3/covid-19/all](https://api.opencagedata.com/geocode/v1/json?q=${lat.lat}+${lat.lng}&key=${API_KEY})</li>
+    <li>[React leaflet : https://disease.sh/v3/covid-19/all]https://api.opencagedata.com/geocode/v1/json?q=${lat.lat}+${lat.lng}&key=${API_KEY}</li>
     
     <li>World wide data of cases: https://disease.sh/v3/covid-19/all
     </li>
