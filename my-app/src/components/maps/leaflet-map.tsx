@@ -1,101 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
+import { useQuery } from "react-query";
 
-const height = { height: "100vh" };
+const height = { height: "100%" };
 const center = { lat: 51.5, lng: 0.12 };
 const API_KEY = "bb34431f79664a54a470e02b0baef163";
 
-const GeocoderMap: React.FC = () => {
-  const [isLoading, SetIsLoading] = useState(true);
+interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+const GeocoderMap = ({ data }: { data: any }) => {
+  const [mapCountry, setMapCountry] = useState<string>("india");
+
+  // const fetchCountryDetails = async (country: string) => {
+  //   const response = await fetch(
+  //     `https://api.opencagedata.com/geocode/v1/json?q=${country}&key=${API_KEY}`
+  //   );
+  //   const data = await response.json();
+  //   return data;
+  // };
+
+  // const { data: countryDetails } = useQuery(
+  //   ["countryDetails", mapCountry],
+  //   () => fetchCountryDetails(mapCountry)
+  // );
 
   const map = useMap();
   let marker: L.Marker | null = null;
 
-  const getCountryData = async (country: string) => {
-    try {
-      const response = await fetch(
-        `https://disease.sh/v3/covid-19/countries/${country}`,
-        {
-          method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
-      const res = await response.json();
-      console.log(res);
-      return {
-        active: res.active,
-        cases: res.cases,
-        deaths: res.deaths,
-        flag: res.countryInfo.flag,
-      };
+  const [lat, setLat] = useState<LatLng>({ lat: 25, lng: 80 });
 
-      // Your other code here
-    } catch (error) {
-      console.error("Geocoding error:", error);
+  useMemo(() => {
+    const countryDetails = data?.find(
+      (el: any) =>
+        el?.country.toLowerCase().trim() === mapCountry?.toLowerCase().trim()
+    );
+
+    const popup = L.popup();
+
+    popup.setContent(() => {
+      const content = countryDetails
+        ? `
+          <div className="info-container-${countryDetails?.cases}">
+          <img src=${countryDetails?.countryInfo?.flag} alt=${countryDetails?.countryInfo?.flag} className="z-30" />
+            <div >${mapCountry}</div>
+            <div >Cases: ${countryDetails?.cases}</div>
+            <div >Recovered: ${countryDetails?.active}</div>
+            <div >Deaths: ${countryDetails?.deaths}</div>
+          </div>
+        `
+        : `
+        <div className="default-container">Click on Map to see Details</div>
+          `;
+      return content;
+    });
+
+    if (marker) {
+      marker.setLatLng(lat).bindPopup(popup).openPopup();
+    } else {
+      marker = L.marker(lat).bindPopup(popup).addTo(map).openPopup();
     }
-  };
+  }, [mapCountry]);
 
   const handleMapClick = async (e: L.LeafletMouseEvent) => {
-    SetIsLoading(true);
-
-    if (marker && isLoading) {
-      const popup = L.popup(); // Create a Popup instance
-      popup.setContent(() => {
-        return ` <div>Loading...</div>
-        `;
-      });
-      marker.setLatLng(e.latlng).bindPopup(popup).openPopup();
+    if (marker) {
+      map.removeLayer(marker);
     }
 
     try {
       const response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${API_KEY}`,
-        {
-          method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
+        `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${API_KEY}`
       );
 
       const res = await response.json();
       let result = res?.results[0];
-      const country = result.formatted.split(",");
-      console.log(country);
-      const data = getCountryData(country[country.length - 1]);
-      const resData = await data;
 
-      if (resData) SetIsLoading(false);
-
-      const popup = L.popup();
-
-      popup.setContent(() => {
-        const content = resData
-          ? `
-          <div className="info-container">
-          <img src=${resData?.flag} alt="Marker" className="z-30" />
-            <div className="info-name">${country}</div>
-            <div className="info-confirmed">Cases: ${resData?.cases}</div>
-            <div className="info-recovered">Recovered: ${resData?.active}</div>
-            <div className="info-deaths">Deaths: ${resData?.deaths}</div>
-          </div>
-        `
-          : `
-        <div className="loading-indicator">Loading...</div>
-          `;
-        return content;
-      });
-
-      if (marker) {
-        marker.setLatLng(e.latlng).bindPopup(popup).openPopup();
-      } else {
-        marker = L.marker(e.latlng).bindPopup(popup).addTo(map).openPopup();
-      }
+      const country = result.components.country;
+      
+      setMapCountry(country);
+      setLat(e.latlng);
     } catch (error) {
-      SetIsLoading(false);
       if (marker) {
         const popup = L.popup();
         popup.setContent(() => {
@@ -113,7 +100,7 @@ const GeocoderMap: React.FC = () => {
   return null;
 };
 
-const MapExample: React.FC = () => {
+const LeafletMap = ({ data }: { data: any }) => {
   return (
     <MapContainer style={height} center={center} zoom={4}>
       <TileLayer
@@ -121,11 +108,11 @@ const MapExample: React.FC = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      <GeocoderMap />
+      <GeocoderMap data={data} />
     </MapContainer>
   );
 };
 
-export default MapExample;
+export default LeafletMap;
 
 // geocoding API key is bb34431f79664a54a470e02b0baef163

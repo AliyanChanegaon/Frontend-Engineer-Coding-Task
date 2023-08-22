@@ -59,25 +59,38 @@ const buildChartData = (data: any, casesType = "cases") => {
   return chartData;
 };
 
-function LineGraph({ casesType = "cases", ...props }) {
+function Graph({
+  casesType = "cases",
+  all,
+  country,
+}: {
+  casesType: string;
+  all?: string;
+  country?: string;
+}) {
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://disease.sh/v3/covid-19/historical/all?lastdays=120"
+          `https://disease.sh/v3/covid-19/historical/${
+            all ? "all" : country
+          }?lastdays=120`
         );
         const data = await response.json();
-        let chartData = buildChartData(data, casesType);
+      
+        let chartData = buildChartData(all ? data : data?.timeline, casesType);
         setData(chartData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log("Error fetching data:", error ,country
+       , all);
       }
     };
 
     fetchData();
-  }, [casesType]);
+  }, [casesType, country]);
 
   return (
     <div>
@@ -98,5 +111,41 @@ function LineGraph({ casesType = "cases", ...props }) {
     </div>
   );
 }
+
+const LineGraph = ({ all, country }: { all?: string; country?: string }) => {
+  const [casesType, setCasesType] = useState("cases");
+
+  return (
+    <div>
+      <h1>
+       
+        {`${
+          all
+            ? "Worldwide"
+            : country!.charAt(0).toUpperCase() + country!.slice(1)
+        } Cases`}
+      </h1>
+      <button
+        onClick={() => setCasesType("cases")}
+        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      >
+        Cases
+      </button>
+      <button
+        onClick={() => setCasesType("deaths")}
+        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      >
+        Death
+      </button>
+      <button
+        onClick={() => setCasesType("recovered")}
+        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      >
+        Recovered
+      </button>
+      <Graph casesType={casesType} all={all} country={country} />
+    </div>
+  );
+};
 
 export default LineGraph;

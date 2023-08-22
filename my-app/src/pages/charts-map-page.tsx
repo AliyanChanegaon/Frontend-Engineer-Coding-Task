@@ -1,44 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useEffect, useState, useMemo } from "react";
+
 import LineGraph from "../components/graphs/line-graph";
 import "leaflet/dist/leaflet.css";
-import Map from "../components/maps/leaflet-map";
+import LeafletMap from "../components/maps/leaflet-map";
+import { DropDown } from "../components/drop-down";
+
 const ChartAndMapPage = () => {
-  const [position] = useState<L.LatLngExpression>([51.505, -0.09]);
-  const [casesType, setCasesType] = useState("cases");
+  const [country, setCountry] = useState("india");
+  const [data, SetData] = useState([]);
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`https://disease.sh/v3/covid-19/countries`);
+
+      const res = await response.json();
+      SetData(res);
+
+
+    } catch (error) {
+      console.error("Geocoding error:", error);
+    }
+  };
 
   useEffect(() => {
-    // Initialize map or handle any map-related actions here
+    getData();
   }, []);
 
+  const options = useMemo(() => {
+    return data?.map((el: any) => el?.country || "");
+  }, [country]);
+
   return (
-    <div className="w-full h-screen">
-      <div>Charts and Map</div>
-          <div><Map/></div>
-      <div className="flex justify-between w-full">
-        <div>
-          
+    <div className="w-full p-3 overflow-hidden flex flex-col">
+      <div className="w-2/5 self-end relative z-50">
+        <DropDown options={options} setCountry={setCountry} country={country} />
+      </div>
+      <div className=" relative z-10 w-full h-full flex mb-4 p-3">
+        <div className="w-3/4 h-6/7 border-2 p-4 bg-slate-400">
+          <LeafletMap data={data} />
         </div>
-        <div>
-          <button
-            onClick={() => setCasesType("cases")}
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          >
-            Cases
-          </button>
-          <button
-            onClick={() => setCasesType("deaths")}
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          >
-            Death
-          </button>
-          <button
-            onClick={() => setCasesType("recovered")}
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          >
-            Recovered
-          </button>
-          <LineGraph casesType={casesType} />
+
+        <div className="flex flex-col justify-between w-1/3 p-4">
+          <div>
+            <LineGraph all={"all"} />
+          </div>
+          <div>
+            <LineGraph country={country} />
+          </div>
         </div>
       </div>
     </div>
