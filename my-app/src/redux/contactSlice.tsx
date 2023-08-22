@@ -8,7 +8,7 @@ interface initialProps {
 
 const initialState: initialProps = {
   contacts: [
-    { firstName: "jioj", lastName: "ioj", status: "Active", id: "JOJ" },
+    { firstName: "Aliyan", lastName: "Chanegaon", status: "Active", id: "JOJ" },
   ],
 };
 

@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
 import { useQuery } from "react-query";
 
 const height = { height: "100%" };
 const center = { lat: 51.5, lng: 0.12 };
-const API_KEY = "bb34431f79664a54a470e02b0baef163";
+const API_KEY = "41df455a63d04b22baab471bfd932421";
 
 interface LatLng {
   lat: number;
@@ -13,25 +13,22 @@ interface LatLng {
 }
 
 const GeocoderMap = ({ data }: { data: any }) => {
-  const [mapCountry, setMapCountry] = useState<string>("india");
-
-  // const fetchCountryDetails = async (country: string) => {
-  //   const response = await fetch(
-  //     `https://api.opencagedata.com/geocode/v1/json?q=${country}&key=${API_KEY}`
-  //   );
-  //   const data = await response.json();
-  //   return data;
-  // };
-
-  // const { data: countryDetails } = useQuery(
-  //   ["countryDetails", mapCountry],
-  //   () => fetchCountryDetails(mapCountry)
-  // );
-
+  const [mapCountry, setMapCountry] = useState<string>();
   const map = useMap();
   let marker: L.Marker | null = null;
+  const [lat, setLat] = useState<LatLng>({ lat: 20, lng: 66 });
 
-  const [lat, setLat] = useState<LatLng>({ lat: 25, lng: 80 });
+  const getCountryName = async () => {
+    const response = await fetch(
+      `https://api.opencagedata.com/geocode/v1/json?q=${lat.lat}+${lat.lng}&key=${API_KEY}`
+    );
+    const data = await response.json();
+    console.log(data);
+    setMapCountry(data?.results[0]?.components.country);
+    return data;
+  };
+
+  useQuery(["countryDetails", lat], getCountryName);
 
   useMemo(() => {
     const countryDetails = data?.find(
@@ -70,29 +67,7 @@ const GeocoderMap = ({ data }: { data: any }) => {
       map.removeLayer(marker);
     }
 
-    try {
-      const response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${API_KEY}`
-      );
-
-      const res = await response.json();
-      let result = res?.results[0];
-
-      const country = result.components.country;
-      
-      setMapCountry(country);
-      setLat(e.latlng);
-    } catch (error) {
-      if (marker) {
-        const popup = L.popup();
-        popup.setContent(() => {
-          return ` <div>Error...</div>
-          `;
-        });
-        marker.setLatLng(e.latlng).bindPopup(popup).openPopup();
-      }
-      console.error("Geocoding error:", error);
-    }
+    setLat(e.latlng);
   };
 
   map.on("click", handleMapClick);
@@ -102,7 +77,7 @@ const GeocoderMap = ({ data }: { data: any }) => {
 
 const LeafletMap = ({ data }: { data: any }) => {
   return (
-    <MapContainer style={height} center={center} zoom={4}>
+    <MapContainer style={height} center={center} zoom={4} maxZoom={8}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -115,4 +90,5 @@ const LeafletMap = ({ data }: { data: any }) => {
 
 export default LeafletMap;
 
-// geocoding API key is bb34431f79664a54a470e02b0baef163
+//Old expired key geocoding API key is bb34431f79664a54a470e02b0baef163
+// New key 41df455a63d04b22baab471bfd932421

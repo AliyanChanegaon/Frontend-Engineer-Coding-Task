@@ -5,7 +5,9 @@ module.exports = {
     "./src/components/**/*.tsx",
   ],
   theme: {
-    extend: {},
+    extend: {
+    
+    },
   },
   plugins: [],
 };

@@ -11,7 +11,7 @@ export default function AllRoutes() {
       <Route path="/" element={<MainPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/contact/id/:id" element={<ContactPage />} />
-      <Route path="/contact/list" element={<ContactList />} />
+      <Route path="/contact-list" element={<ContactList />} />
       <Route path="/carts-maps" element={<ChartAndMapPage />} />
       {/* <Route path="/abc" element={<MAPOK />} /> */}
       

@@ -40,7 +40,7 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
   const HandlingSubmit = () => {
     dispatch(
       contactId
-        ? editContact({ ...formData})
+        ? editContact({ ...formData })
         : addContact({ ...formData, id: Date.now().toString() })
     );
     Navigate("/contact/list");
@@ -54,9 +54,15 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
   }, []);
 
   return (
-    <>
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="md:flex md:items-center mb-6">
+    <div
+      className="p-5 "
+      style={{
+        boxShadow:
+          " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px",
+      }}
+    >
+      <form className="bg-white w-full sm:max-w-[450px] px-5 rounded sm:px-8 sm:pt-6  ">
+        <div className="md:flex md:items-center sm:mb-6">
           <div className="md:w-1/3">
             <label
               className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
@@ -106,15 +112,15 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
               Status
             </label>
           </div>
-          <div className="md:w-2/3">
-            <div className="flex items-center mb-4">
+          <div className="flex gap-5 ">
+            <div className="flex ">
               <input
                 type="radio"
                 name="status"
                 checked={formData.status === "Active"}
                 value="Active"
                 onChange={HandlingChange}
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="w-4  border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
                 htmlFor="country-option-1"
@@ -123,14 +129,14 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
                 Active
               </label>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex ">
               <input
                 type="radio"
                 name="status"
                 checked={formData.status === "Inactive"}
                 value="Inactive"
                 onChange={HandlingChange}
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="w-4  border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
                 htmlFor="country-option-1"
@@ -142,34 +148,23 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
           </div>
         </div>
       </form>
-      <div className="flex gap-5">
+      <div className="flex w-full item-center justify-center gap-5 p-5 pt-0">
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
-            // if (setinputActive) {
-            //   if (isEdit && HandlingEditData) {
-            //     setinputActive(false);
-            //     HandlingEditData(formData);
-            //   } else {
-            //     if (HandlingSubmit) {
-            //       setinputActive(false);
-            //       HandlingSubmit();
-            //     }
-            //   }
-            // }
             HandlingSubmit();
           }}
         >
           {contactId ? "Update Details" : "Save Contact"}
         </button>
         <button
-          className="bg-white hover:bg-gray-300 text-black font-bold py-2 px-4 rounded"
+          className="bg-[#e5e5e5] hover:bg-gray-300 text-black font-bold py-2 px-4 rounded"
           onClick={() => Navigate("/contact/list")}
         >
           Go back
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

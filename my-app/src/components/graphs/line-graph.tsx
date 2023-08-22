@@ -116,33 +116,36 @@ const LineGraph = ({ all, country }: { all?: string; country?: string }) => {
   const [casesType, setCasesType] = useState("cases");
 
   return (
-    <div>
-      <h1>
+    <div className="p-4 flex flex-col text-center " style={{boxShadow:
+      " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"}}>
+      <p className="text-lg font-bold mb-2" >
        
         {`${
           all
             ? "Worldwide"
             : country!.charAt(0).toUpperCase() + country!.slice(1)
         } Cases`}
-      </h1>
+      </p >
+      <div className="ml-2 flex gap-5 " >
       <button
         onClick={() => setCasesType("cases")}
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        className=" bg-[#306893] hover:bg-[#234057] text-white font-bold  px-4 rounded-full"
       >
         Cases
       </button>
       <button
         onClick={() => setCasesType("deaths")}
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        className="bg-[#306893] hover:bg-[#234057] text-white font-bold  px-4 rounded-full"
       >
         Death
       </button>
       <button
         onClick={() => setCasesType("recovered")}
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        className="bg-[#306893] hover:bg-[#234057] text-white font-bold  px-4 rounded-full"
       >
         Recovered
       </button>
+      </div>
       <Graph casesType={casesType} all={all} country={country} />
     </div>
   );
