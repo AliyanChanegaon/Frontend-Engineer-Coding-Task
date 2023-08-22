@@ -61,8 +61,8 @@ The API key obtained for accessing the OpenCageData API is valid for a duration 
 
 <h1>APIs Used</h1>
 <ul>
-    <li>[React leaflet : https://disease.sh/v3/covid-19/all]https://api.opencagedata.com/geocode/v1/json?q=${lat.lat}+${lat.lng}&key=${API_KEY}</li>
-    
+     <li>React Leaflet :https://api.opencagedata.com/geocode/v1/json?q=${lat.lat}+${lat.lng}&key=${API_KEY}
+    </li>
     <li>World wide data of cases: https://disease.sh/v3/covid-19/all
     </li>
     <li>Country Specific data of cases: https://disease.sh/v3/covid-19/countries</li>
@@ -90,6 +90,46 @@ The API key obtained for accessing the OpenCageData API is valid for a duration 
 <h1><strong> Development Installation </strong></h1>
 
 Follow these instructions to set up your development environment, which you need to do before you start contributing code to this project.
+
+<h1><strong> Manual Installation </strong></h1>
+
+_Note_: The installation steps assume you are using a Unix-like shell. If you are using Windows, you will need to use `copy` instead of `cp`.
+
+1. Install Node.js. The recommended way is to Node through [nvm](https://github.com/nvm-sh/nvm). You can also install [node.js](https://nodejs.org/download/release/v18.2.0/) version 18.2.0 directly from the Node.js website.
+2. [Clone](https://github.com/aayanlobo/CovidConnectPlus.git) your new fork of the repository from GitHub onto your local computer.
+
+   ```
+   $ git clone https://github.com/AliyanChanegaon/Frontend-Engineer-Coding-Task.git
+   ```
+3. Navigate to root directory and implement the following commands :
+
+   ```
+   $ cd my-app
+   $ npm install
+   $ npm run start
+   ```
+
+
+# Links
+
+- [Deployed Project](https://aliyan-covid-tracker.vercel.app/)
+
+
+# Showcase
+
+
+<table>
+  <tr>
+    <td><img src="https://i.ibb.co/7jHLjVx/1.png"  alt="" /></td>
+    <td><img src="https://i.ibb.co/vJN1m7f/2.png"  alt="" /></td>
+  </tr>
+  <tr>
+   <td><img src="https://i.ibb.co/qYvZyZw/3.png"  alt="" /></td>
+    <td><img src="https://i.ibb.co/BVvgcr7/4.png"  alt="" /></td>
+  </tr>
+  
+
+</table>
 
 
 
