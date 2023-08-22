@@ -31,9 +31,6 @@ The API key obtained for accessing the OpenCageData API is valid for a duration 
 
 5. Save the changes to the `leaflet-map.tsx` file.
 
-## Example:
-
-```jsx
 // my-app/src/components/maps/leaflet-map.tsx
 
 // ... other imports ...
@@ -42,7 +39,8 @@ const API_KEY = 'YOUR_OCD_API_KEY'; // Replace this with your actual API key
 
 // ... rest of the code ...
 
-```jsx
+export default LeafletMap;
+
 
 <h1>Objectives of Contact Page</h1>
 <ul>
