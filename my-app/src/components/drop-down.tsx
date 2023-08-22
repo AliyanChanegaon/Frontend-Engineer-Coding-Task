@@ -1,7 +1,6 @@
-import { Fragment, useEffect, useState, useMemo } from "react";
+import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
-import { getDatasetAtEvent } from "react-chartjs-2";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -17,10 +16,10 @@ export const DropDown = ({
   options: string[];
 }) => {
   return (
-    <Menu  as="div" className="relative inline-block text-left h-full">
+    <Menu as="div" className="relative inline-block text-left h-full">
       <div>
         <Menu.Button className="inline-flex w-full  justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-          {country === "" ? "Option" : country}
+          {country === "" ? "Select Country" : country}
           <FaChevronDown
             className="-mr-1 h-5 w-5 text-gray-400"
             aria-hidden="true"
@@ -55,22 +54,6 @@ export const DropDown = ({
                   )}
                 </Menu.Item>
               ))}
-
-            <form>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    type="submit"
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full px-4 py-2 text-left text-sm"
-                    )}
-                  >
-                    Sign out
-                  </button>
-                )}
-              </Menu.Item>
-            </form>
           </div>
         </Menu.Items>
       </Transition>

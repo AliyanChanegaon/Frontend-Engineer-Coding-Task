@@ -24,5 +24,5 @@
   "include": [
     "src",
     "src/redux"
-  ]
+, "src/models/contact-model.ts"  ]
 }

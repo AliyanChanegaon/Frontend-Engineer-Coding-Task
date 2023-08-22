@@ -6,7 +6,7 @@ import LeafletMap from "../components/maps/leaflet-map";
 import { DropDown } from "../components/drop-down";
 
 const ChartAndMapPage = () => {
-  const [country, setCountry] = useState("india");
+  const [country, setCountry] = useState("");
   const [options, setOptions] = useState([]);
 
   const getData = async () => {
@@ -47,5 +47,3 @@ const ChartAndMapPage = () => {
 };
 
 export default ChartAndMapPage;
-
-// cases,deaths,recovered

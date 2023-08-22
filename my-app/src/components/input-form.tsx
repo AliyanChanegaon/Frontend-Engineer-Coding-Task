@@ -1,14 +1,14 @@
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addContact, editContact, selectContacts } from "../redux/contactSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { ContactModel } from "../models/contact-model";
 
-export interface userModel {
-  firstName: string;
-  lastName: string;
-  status: string;
-  id: string;
+interface initialValueProps {
+  HandlingBackButton?: () => void;
+  HandlingEditData?: (value: ContactModel) => void;
+  isEdit?: boolean;
 }
 
 const initialValue = {
@@ -18,19 +18,13 @@ const initialValue = {
   id: "",
 };
 
-export interface initialValueProps {
-  HandlingBackButton?: () => void;
-  HandlingEditData?: (value: userModel) => void;
-  isEdit?: boolean;
-}
-
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const InputForm = ({ contactId }: { contactId?: string }) => {
   const { contacts } = useTypedSelector(selectContacts);
+  const [formData, setFormData] = useState<ContactModel>(initialValue);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState<userModel>(initialValue);
 
   const HandlingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name: key, value } = e.target;
@@ -38,12 +32,15 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
   };
 
   const HandlingSubmit = () => {
+    if (!formData.firstName || !formData.lastName) {
+      return alert("Fields are required");
+    }
     dispatch(
       contactId
         ? editContact({ ...formData })
         : addContact({ ...formData, id: Date.now().toString() })
     );
-    Navigate("/contact/list");
+    Navigate("/contact-list");
   };
 
   useEffect(() => {
@@ -55,7 +52,7 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
 
   return (
     <div
-      className="p-5 "
+      className="p-5"
       style={{
         boxShadow:
           " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px",
@@ -79,6 +76,7 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
               name="firstName"
               value={formData.firstName}
               onChange={HandlingChange}
+              required
             />
           </div>
         </div>
@@ -99,6 +97,7 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
               name="lastName"
               value={formData.lastName}
               onChange={HandlingChange}
+              required
             />
           </div>
         </div>
@@ -151,15 +150,13 @@ const InputForm = ({ contactId }: { contactId?: string }) => {
       <div className="flex w-full item-center justify-center gap-5 p-5 pt-0">
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            HandlingSubmit();
-          }}
+          onClick={HandlingSubmit}
         >
           {contactId ? "Update Details" : "Save Contact"}
         </button>
         <button
           className="bg-[#e5e5e5] hover:bg-gray-300 text-black font-bold py-2 px-4 rounded"
-          onClick={() => Navigate("/contact/list")}
+          onClick={() => Navigate("/contact-list")}
         >
           Go back
         </button>
