@@ -127,6 +127,15 @@ _Note_: The installation steps assume you are using a Unix-like shell. If you ar
    <td><img src="https://i.ibb.co/qYvZyZw/3.png"  alt="" /></td>
     <td><img src="https://i.ibb.co/BVvgcr7/4.png"  alt="" /></td>
   </tr>
+    <tr>
+   <td><img src="https://i.ibb.co/kDdQ3Bx/5.png"  alt="" /></td>
+    <td><img src="https://i.ibb.co/MsPGL88/6.png"  alt="" /></td>
+  </tr>
+    <tr>
+   <td><img src="https://i.ibb.co/mqJ0H9C/7.png" alt="" /></td>
+    <td><img src="https://i.ibb.co/Kz1Wt8R/8.png" alt="" /></td>
+  </tr>
+  
   
 
 </table>
