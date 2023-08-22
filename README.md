@@ -1,21 +1,47 @@
 # Taiyo.AI-Frontend-Engineer-Coding-Task
 
 
-<h1>API Documentation</h1>
-<ul>
-    <li>API Validity 2 days</li>
-    <li>Generate API from -"https://opencagedata.com/users/sign_in"</li>
-    <li>
-    Check your email for API key
-    </li>
-    <li>
-    Follow the path - my-app/src/components/maps/leaflet-map.tsx
-    </li>
-    <li>
-   Change the API key from line number 12
-    </li>
-    
-</ul>
+# OpenCageData API Integration Guide
+
+This guide provides instructions on integrating the OpenCageData API into your project for geocoding and location-based services.
+
+## API Validity
+
+The API key obtained for accessing the OpenCageData API is valid for a duration of 2 days from the time of generation.
+
+## Getting Started
+
+1. To generate your API key, visit [OpenCageData Sign In](https://opencagedata.com/users/sign_in).
+
+2. Log in to your account or create a new one if you haven't already.
+
+3. After logging in, navigate to the appropriate section to generate an API key.
+
+4. An email containing your API key will be sent to the address associated with your OpenCageData account. Keep this API key secure.
+
+## Integration Steps
+
+1. Locate the file named `leaflet-map.tsx` within the path `my-app/src/components/maps/leaflet-map.tsx` in your project directory. This is the file where the OpenCageData API key needs to be configured.
+
+2. Open the `leaflet-map.tsx` file in your preferred code editor.
+
+3. Look for the line number 12 in the `leaflet-map.tsx` file.
+
+4. Replace the existing API key with the API key you received via email from OpenCageData. The API key is typically passed as a parameter when making API requests.
+
+5. Save the changes to the `leaflet-map.tsx` file.
+
+## Example:
+
+```jsx
+// my-app/src/components/maps/leaflet-map.tsx
+
+// ... other imports ...
+
+const API_KEY = 'YOUR_OCD_API_KEY'; // Replace this with your actual API key
+
+// ... rest of the code ...
+
 
 
 <h1>Objectives of Contact Page</h1>
